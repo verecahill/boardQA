@@ -1,8 +1,11 @@
 package app.controller;
 
+import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.websocket.SessionException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -47,7 +50,7 @@ public class UserController {
 	
 	@PostMapping("login")
 //	public String login(String userId, String password, HttpSession session) {
-	public String login(String userId, String password, HttpServletRequest req) throws ServletException {
+	public String login(String userId, String password, HttpServletRequest req) throws org.hibernate.SessionException {
 		
 		System.out.println("login start");
 		User user = userRepository.findByUserId(userId);
@@ -61,8 +64,7 @@ public class UserController {
 			return "redirect:/users/login";
 		}
 		System.out.println("found user data");
-		
-		HttpSession session = req.getSession();		
+		HttpSession session = req.getSession(true);					
 		session.setAttribute(HttpSessionUtils.USER_SESSION_KEY, user);
 		System.out.println("Login success");
 		
