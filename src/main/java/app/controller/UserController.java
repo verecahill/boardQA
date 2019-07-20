@@ -3,6 +3,8 @@ package app.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,8 +20,6 @@ import app.repository.UserRepository;
 @Controller
 @RequestMapping("/users")
 public class UserController {
-	
-	private List<User> users = new ArrayList<User>();
 	
 	@Autowired
 	private UserRepository userRepository;
@@ -37,6 +37,30 @@ public class UserController {
 //		model.addAttribute("users",users);
 		model.addAttribute("users", userRepository.findAll());
 		return "/user/list";
+	}
+	
+	@GetMapping("/login")
+	public String loginForm() {
+		return "/user/login";
+	}
+	
+	@PostMapping("login")
+	public String login(String userId, String password, HttpSession session) {
+		
+		User user = userRepository.findByUserId(userId);
+		
+		if (user == null) {
+			System.out.println("Login success");
+			return "redirect:/users/login";
+		}
+		if (!password.equals(user.getPassword())) {
+			System.out.println("Login success");
+			return "redirect:/users/login";
+		}
+		
+		System.out.println("Login success");
+		session.setAttribute("user", user);
+		return "redirect:/";
 	}
 	
 	@GetMapping("form")
