@@ -44,7 +44,8 @@ public class UserController {
 	}
 	
 	@PostMapping("login")
-	public String login(String userId, String password, HttpSession session) {
+//	public String login(String userId, String password, HttpSession session) {
+	public String login(String userId, String password) {
 		System.out.println("login start");
 		User user = userRepository.findByUserId(userId);
 		System.out.println("found user id");
