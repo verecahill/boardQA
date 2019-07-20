@@ -39,6 +39,7 @@ public class UserController {
 	
 	@GetMapping("login")
 	public String loginForm() {
+		System.out.println("Login form");
 		return "user/login";
 	}
 	
@@ -56,8 +57,8 @@ public class UserController {
 			return "redirect:/users/login";
 		}
 		
-		System.out.println("Login success");
-		session.setAttribute(HttpSessionUtils.USER_SESSION_KEY, user);
+//		System.out.println("Login success");
+//		session.setAttribute(HttpSessionUtils.USER_SESSION_KEY, user);
 		
 		return "redirect:/";
 	}
