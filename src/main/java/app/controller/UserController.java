@@ -45,9 +45,9 @@ public class UserController {
 	
 	@PostMapping("login")
 	public String login(String userId, String password, HttpSession session) {
-		
+		System.out.println("login start");
 		User user = userRepository.findByUserId(userId);
-		
+		System.out.println("found user id");
 		if (user == null) {
 			System.out.println("not matched userId");
 			return "redirect:/users/login";
@@ -56,7 +56,7 @@ public class UserController {
 			System.out.println("wrong password");
 			return "redirect:/users/login";
 		}
-		
+		System.out.println("found user data");
 //		System.out.println("Login success");
 //		session.setAttribute(HttpSessionUtils.USER_SESSION_KEY, user);
 		
