@@ -27,19 +27,19 @@ public class UserController {
 //		System.out.println(user);
 //		users.add(user);
 		userRepository.save(user);
-		return "redirect:users";
+		return "redirect:/";
 	}
 	
 	@GetMapping("")
 	public String list(Model model) {
 //		model.addAttribute("users",users);
 		model.addAttribute("users", userRepository.findAll());
-		return "/user/list";
+		return "user/list";
 	}
 	
 	@GetMapping("/login")
 	public String loginForm() {
-		return "/user/login";
+		return "user/login";
 	}
 	
 	@PostMapping("login")
@@ -73,7 +73,7 @@ public class UserController {
 	@GetMapping("form")
 	public String form() {
 	
-		return "/user/form";
+		return "user/form";
 	}
 	
 	@GetMapping("{id}/form")
@@ -90,7 +90,7 @@ public class UserController {
 		
 		User user = userRepository.findOne(id);
 		model.addAttribute("user", user);
-		return "/user/updateForm";
+		return "user/updateForm";
 	}
 	
 	@PutMapping("/{id}")
@@ -107,6 +107,6 @@ public class UserController {
 		User user = userRepository.findOne(id);
 		user.update(updateUser);
 		userRepository.save(user);
-		return "redirect:/users";
+		return "redirect:/";
 	}
 }

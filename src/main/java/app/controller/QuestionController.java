@@ -23,21 +23,22 @@ public class QuestionController {
 	@GetMapping("/form")
 	public String form(HttpSession session) {
 		if (!HttpSessionUtils.isLoginUser(session)) {
-			return "/users/login";
+			return "users/login";
 		}
-		return "/qna/form";
+		return "qna/form";
 	}
 	
 	@PostMapping("")
 	public String create(String title, String contents, HttpSession session) {
 		
 		if (!HttpSessionUtils.isLoginUser(session)) {
-			return "/users/login";
+			return "users/login";
 		}
 		
 		User sessionUser = HttpSessionUtils.getUserFromSession(session);
 		Question newQuestion = new Question(sessionUser.getUserId(), title, contents);
 		questionRepository.save(newQuestion);
+		
 		return "redirect:/";
 	}
 	
