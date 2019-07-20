@@ -1,8 +1,5 @@
 package app.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,18 +47,27 @@ public class UserController {
 		User user = userRepository.findByUserId(userId);
 		
 		if (user == null) {
-			System.out.println("Login success");
+			System.out.println("not matched userId");
 			return "redirect:/users/login";
 		}
 		if (!password.equals(user.getPassword())) {
-			System.out.println("Login success");
+			System.out.println("wrong password");
 			return "redirect:/users/login";
 		}
 		
 		System.out.println("Login success");
 		session.setAttribute("user", user);
+		
 		return "redirect:/";
 	}
+	
+	@GetMapping("logout")
+	public String logout(HttpSession session) {
+		session.removeAttribute("user");
+		
+		return "redirect:/";
+	}
+	
 	
 	@GetMapping("form")
 	public String form() {
