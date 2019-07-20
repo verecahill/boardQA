@@ -37,7 +37,7 @@ public class UserController {
 		return "user/list";
 	}
 	
-	@GetMapping("/login")
+	@GetMapping("login")
 	public String loginForm() {
 		return "user/login";
 	}
@@ -93,7 +93,7 @@ public class UserController {
 		return "user/updateForm";
 	}
 	
-	@PutMapping("/{id}")
+	@PutMapping("{id}")
 	public String update(@PathVariable Long id, User updateUser, HttpSession session) {
 		if (!HttpSessionUtils.isLoginUser(session)) {
 			return "redirect:/users/login";
