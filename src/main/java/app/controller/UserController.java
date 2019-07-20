@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import app.dto.User;
 import app.repository.UserRepository;
+import app.util.HttpSessionUtils;
 
 @Controller
 @RequestMapping("/users")
@@ -50,20 +51,20 @@ public class UserController {
 			System.out.println("not matched userId");
 			return "redirect:/users/login";
 		}
-		if (!password.equals(user.getPassword())) {
+		if (!user.matchPassword(password)) {
 			System.out.println("wrong password");
 			return "redirect:/users/login";
 		}
 		
 		System.out.println("Login success");
-		session.setAttribute("sessionUser", user);
+		session.setAttribute(HttpSessionUtils.USER_SESSION_KEY, user);
 		
 		return "redirect:/";
 	}
 	
 	@GetMapping("logout")
 	public String logout(HttpSession session) {
-		session.removeAttribute("sessionUser");
+		session.removeAttribute(HttpSessionUtils.USER_SESSION_KEY);
 		
 		return "redirect:/";
 	}
@@ -77,13 +78,13 @@ public class UserController {
 	
 	@GetMapping("{id}/form")
 	public String updateForm(@PathVariable Long id, Model model, HttpSession session){
-		Object sessionUser = session.getAttribute("sessionUser");
-		if (sessionUser == null) {
+		
+		if (!HttpSessionUtils.isLoginUser(session)) {
 			return "redirect:/users/login";
 		}
 		
-		User sessionedUser = (User)sessionUser;
-		if (!id.equals(sessionedUser.getId())){
+		User sessionedUser = HttpSessionUtils.getUserFromSession(session);
+		if (!sessionedUser.matchId(id)){
 			throw new IllegalStateException("illegal access");
 		}
 		
@@ -94,12 +95,11 @@ public class UserController {
 	
 	@PutMapping("/{id}")
 	public String update(@PathVariable Long id, User updateUser, HttpSession session) {
-		Object sessionUser = session.getAttribute("sessionUser");
-		if (sessionUser == null) {
+		if (!HttpSessionUtils.isLoginUser(session)) {
 			return "redirect:/users/login";
 		}
 		
-		User sessionedUser = (User)sessionUser;
+		User sessionedUser = HttpSessionUtils.getUserFromSession(session);
 		if (!id.equals(sessionedUser.getId())){
 			throw new IllegalStateException("illegal access");
 		}
