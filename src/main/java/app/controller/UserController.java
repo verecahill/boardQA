@@ -56,14 +56,14 @@ public class UserController {
 		}
 		
 		System.out.println("Login success");
-		session.setAttribute("user", user);
+		session.setAttribute("sessionUser", user);
 		
 		return "redirect:/";
 	}
 	
 	@GetMapping("logout")
 	public String logout(HttpSession session) {
-		session.removeAttribute("user");
+		session.removeAttribute("sessionUser");
 		
 		return "redirect:/";
 	}
@@ -76,15 +76,36 @@ public class UserController {
 	}
 	
 	@GetMapping("{id}/form")
-	public String updateForm(@PathVariable Long id, Model model) {
-		model.addAttribute("user", userRepository.findOne(id));
+	public String updateForm(@PathVariable Long id, Model model, HttpSession session){
+		Object sessionUser = session.getAttribute("sessionUser");
+		if (sessionUser == null) {
+			return "redirect:/users/login";
+		}
+		
+		User sessionedUser = (User)sessionUser;
+		if (!id.equals(sessionedUser.getId())){
+			throw new IllegalStateException("illegal access");
+		}
+		
+		User user = userRepository.findOne(id);
+		model.addAttribute("user", user);
 		return "/user/updateForm";
 	}
 	
 	@PutMapping("/{id}")
-	public String update(@PathVariable Long id, User newUser) {
+	public String update(@PathVariable Long id, User updateUser, HttpSession session) {
+		Object sessionUser = session.getAttribute("sessionUser");
+		if (sessionUser == null) {
+			return "redirect:/users/login";
+		}
+		
+		User sessionedUser = (User)sessionUser;
+		if (!id.equals(sessionedUser.getId())){
+			throw new IllegalStateException("illegal access");
+		}
+		
 		User user = userRepository.findOne(id);
-		user.update(newUser);
+		user.update(updateUser);
 		userRepository.save(user);
 		return "redirect:/users";
 	}
