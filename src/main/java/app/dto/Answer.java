@@ -11,26 +11,31 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 public class Answer {
 
 	@Id
 	@GeneratedValue
+	@JsonProperty
 	private Long id;
 	
 	@ManyToOne
 	@JoinColumn(foreignKey=@ForeignKey(name="fk_question_writer"))
+	@JsonProperty
 	private User writer;
 	
 	@ManyToOne
 	@JoinColumn(foreignKey=@ForeignKey(name="fk_answer_to_question"))
+	@JsonProperty
 	private Question question;
 	
 	@Lob
+	@JsonProperty
 	private String contents;
 	
 	@Temporal(TemporalType.TIMESTAMP)
@@ -86,6 +91,11 @@ public class Answer {
 	@Override
 	public String toString() {
 		return "Answer [id=" + id + ", writer=" + writer + ", content=" + contents + ", createDate=" + createDate + "]";
+	}
+
+	public boolean isSameWriter(User loginUser) {
+		
+		return loginUser.equals(this.writer);
 	}
 	
 	
