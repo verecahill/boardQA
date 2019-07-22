@@ -28,14 +28,14 @@ public class ApiTaskController {
 	private TaskRepository taskRepository;
 	
 	@PostMapping("")
-	public Task create(@PathVariable Long boardId, String contents, HttpSession session) {
+	public Task create(@PathVariable Long boardId, String contents, String title, HttpSession session) {
 		if (!HttpSessionUtils.isLoginUser(session)) {
 			return null;
 		}
 		
 		User loginUser = HttpSessionUtils.getUserFromSession(session);
 		Board board = boardRepository.findOne(boardId);
-		Task task = new Task(loginUser, board, contents);
+		Task task = new Task(loginUser, board, contents, title);
 		board.addAnswer();
 		return taskRepository.save(task);
 		

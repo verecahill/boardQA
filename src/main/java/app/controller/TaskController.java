@@ -26,14 +26,14 @@ public class TaskController {
 	private TaskRepository taskRepository;
 	
 	@PostMapping("")
-	public String create(@PathVariable Long boardId, String contents, HttpSession session) {
+	public String create(@PathVariable Long boardId, String contents, String title, HttpSession session) {
 		if (!HttpSessionUtils.isLoginUser(session)) {
 			return "user/login";
 		}
 		
 		User loginUser = HttpSessionUtils.getUserFromSession(session);
 		Board question = boardRepository.findOne(boardId);
-		Task answer = new Task(loginUser, question, contents);
+		Task answer = new Task(loginUser, question, contents, title);
 		taskRepository.save(answer);
 		return String.format("redirect:/questions/%d", boardId);
 		

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import app.dto.Board;
 import app.dto.User;
@@ -101,9 +102,13 @@ public class BoardController {
 	@DeleteMapping("/{id}")
 	public String delete(@PathVariable Long id, Model model, HttpSession session) {
 		try {
-			Board question = boardRepository.findOne(id);
-			hasPermission(session, question);
+			System.out.println("delete board");
+			Board board = boardRepository.findOne(id);
+			System.out.println(board.toString());
+			hasPermission(session, board);
+			System.out.println("has permission");
 			boardRepository.delete(id);
+			System.out.println("delete success");
 			return "redirect:/";
 			
 		} catch (IllegalStateException e){

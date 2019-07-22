@@ -1,4 +1,5 @@
 $(".answer-write input[type=sumbit]").click(addAnswer);
+$("#task-add").click(addAnswer);
 
 function addAnswer(e) {
 	e.preventDefault();
@@ -17,8 +18,6 @@ function addAnswer(e) {
 		error : onError,
 		success : onSuccess
 	});
-	
-	
 }
 
 function onError() {
@@ -26,24 +25,25 @@ function onError() {
 }
 
 function onSuccess(data, status) {
-	if(data.userId == null){
-		alert("로그인 해야 합니다.");
+	console.log(data);
+	if(data.id == null){
+		alert("Task 추가 오류");
 		$(".answer-write textarea").val("");
 		return;
 	}
 	console.log("data : " + data);
 	var answerTemplate = $("#answerTemplate").html();
 	var template = answerTemplate.format(data.writer.userId,
-			data.formattedCreateDate, data.contents, data.question.id, data.id);
-	$(".qna-comment-slipp-articles").prepend(template);
+			data.formattedCreateDate, data.contents, data.board.id, data.id, data.title);
+	$("#task-list").prepend(template);
 	$(".answer-write textarea").val("");
 }
 
 
 //$("a.link-delete-article").on('click', deleteAnswer);
-$("body").on("click", "a.link-delete-article", deleteAnswer);
+$("body").on("click", "a.link-delete-article", deleteTask);
 
-function deleteAnswer(e) {
+function deleteTask(e) {
 	e.preventDefault();
 	
 	var deleteBtn = $(this);
@@ -60,10 +60,33 @@ function deleteAnswer(e) {
 		success : function(data, status) {
 			console.log(data);
 			if (data.valid) {
-				deleteBtn.closest("article").remove();
+				deleteBtn.closest(".card").remove();
 			} else {
 				alert(data.errorMessage);
 			}
+		}
+	});
+}
+
+$("body").on("click", "#delete-board", deleteBoard);
+
+function deleteBoard(e) {
+	e.preventDefault();
+	
+	var deleteBtn = $(this);
+	var url = deleteBtn.attr("href");
+	console.log(url);
+
+	$.ajax({
+		type : 'delete',
+		url : url,
+		dataType : 'json',
+		error : function(xhr, status) {
+			alert("소유자만 삭제가 가능합니다.");
+		},
+		success : function(data, status) {
+//			window.location.href = "/";
+			console.log("delete success");
 		}
 	});
 }

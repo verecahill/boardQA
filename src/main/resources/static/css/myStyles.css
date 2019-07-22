@@ -1,0 +1,31 @@
+.navbar-default {
+	background-color: #f4f4f4;
+	margin-top: 50px;
+	border-width: 0;
+	z-index: 5;
+}
+
+.header {
+	background-color: #ffffff;
+	border-width: 0;
+}
+
+#subnav {
+	position: fixed;
+	width: 100%;
+}
+
+.container {
+	padding-top: 120px;
+	padding-bottom: 50px;
+}
+
+.card.col-sm-3 {
+    border-style: solid;
+    border-width: thin;
+    border-color: grey;
+    border-radius: 5%;
+    margin:5px;
+    padding: 15px;
+}
+

@@ -48,9 +48,9 @@ public class Board {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createDate;
 	
-	@OneToMany(mappedBy="question")
+	@OneToMany(mappedBy="board")
 	@OrderBy("id ASC")
-	private List<Task> answers;
+	private List<Task> tasks;
 	
 	public Board() {}
 

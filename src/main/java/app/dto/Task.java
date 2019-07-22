@@ -32,7 +32,10 @@ public class Task {
 	@ManyToOne
 	@JoinColumn(foreignKey=@ForeignKey(name="fk_answer_to_question"))
 	@JsonProperty
-	private Board question;
+	private Board board;
+	
+	@JsonProperty
+	private String title;
 	
 	@Lob
 	@JsonProperty
@@ -43,9 +46,10 @@ public class Task {
 	
 	public Task() {}
 	
-	public Task(User writer, Board question, String contents) {
+	public Task(User writer, Board board, String contents, String title) {
 		this.writer = writer;
-		this.question = question;
+		this.board = board;
+		this.title = title;
 		this.contents = contents;
 		this.createDate = Calendar.getInstance().getTime();
 	}

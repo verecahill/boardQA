@@ -46,11 +46,13 @@
 			<scope>test</scope>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/org.webjars/bootstrap -->
 		<dependency>
 			<groupId>org.webjars</groupId>
 			<artifactId>bootstrap</artifactId>
-			<version>3.3.7</version>
+			<version>4.3.0</version>
 		</dependency>
+
 
 		<dependency>
 			<groupId>org.webjars.bower</groupId>
@@ -59,9 +61,8 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-			<scope>runtime</scope>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
 		</dependency>
 
 		<dependency>
@@ -86,5 +87,6 @@
 			</plugin>
 		</plugins>
 	</build>
+
 
 </project>
