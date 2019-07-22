@@ -17,7 +17,7 @@ import javax.persistence.TemporalType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
-public class Answer {
+public class Task {
 
 	@Id
 	@GeneratedValue
@@ -32,7 +32,7 @@ public class Answer {
 	@ManyToOne
 	@JoinColumn(foreignKey=@ForeignKey(name="fk_answer_to_question"))
 	@JsonProperty
-	private Question question;
+	private Board question;
 	
 	@Lob
 	@JsonProperty
@@ -41,9 +41,9 @@ public class Answer {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createDate;
 	
-	public Answer() {}
+	public Task() {}
 	
-	public Answer(User writer, Question question, String contents) {
+	public Task(User writer, Board question, String contents) {
 		this.writer = writer;
 		this.question = question;
 		this.contents = contents;
@@ -79,7 +79,7 @@ public class Answer {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Answer other = (Answer) obj;
+		Task other = (Task) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

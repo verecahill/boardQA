@@ -23,7 +23,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 @Entity
-public class Question {
+public class Board {
 
 	@Id
 	@GeneratedValue
@@ -50,11 +50,11 @@ public class Question {
 	
 	@OneToMany(mappedBy="question")
 	@OrderBy("id ASC")
-	private List<Answer> answers;
+	private List<Task> answers;
 	
-	public Question() {}
+	public Board() {}
 
-	public Question(User writer, String title, String contents) {
+	public Board(User writer, String title, String contents) {
 		super();
 		this.writer = writer;
 		this.title = title;

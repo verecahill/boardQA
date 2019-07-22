@@ -12,17 +12,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import app.dto.Question;
+import app.dto.Board;
 import app.dto.User;
-import app.repository.QuestionRepository;
+import app.repository.BoardRepository;
 import app.util.HttpSessionUtils;
 
 @Controller
-@RequestMapping("/questions")
-public class QuestionController {
+@RequestMapping("/boards")
+public class BoardController {
 
 	@Autowired
-	private QuestionRepository questionRepository;
+	private BoardRepository boardRepository;
 	
 	@GetMapping("/form")
 	public String form(HttpSession session) {
@@ -40,15 +40,15 @@ public class QuestionController {
 		}
 		
 		User sessionUser = HttpSessionUtils.getUserFromSession(session);
-		Question newQuestion = new Question(sessionUser, title, contents);
-		questionRepository.save(newQuestion);
+		Board newBoard = new Board(sessionUser, title, contents);
+		boardRepository.save(newBoard);
 		
 		return "redirect:/";
 	}
 	
 	@GetMapping("/{id}")
 	public String show(@PathVariable Long id, Model model) {
-		model.addAttribute("question", questionRepository.findOne(id));
+		model.addAttribute("board", boardRepository.findOne(id));
 		return "/qna/show";
 				
 	}
@@ -56,9 +56,9 @@ public class QuestionController {
 	@GetMapping("/{id}/form")
 	public String updateForm(@PathVariable Long id, Model model, HttpSession session) {
 		try {
-			Question question = questionRepository.findOne(id);
-			hasPermission(session, question);
-			model.addAttribute("question", question);
+			Board board = boardRepository.findOne(id);
+			hasPermission(session, board);
+			model.addAttribute("board", board);
 			return "/qna/updateForm";
 			
 		} catch (IllegalStateException e){
@@ -67,13 +67,13 @@ public class QuestionController {
 		}
 	}
 	
-	private boolean hasPermission(HttpSession session, Question question) {
+	private boolean hasPermission(HttpSession session, Board board) {
 		if (!HttpSessionUtils.isLoginUser(session)) {
 			throw new IllegalStateException("로그인이 필요합니다.");
 		}
 		
 		User loginUser = HttpSessionUtils.getUserFromSession(session);
-		if(!question.isSameWriter(loginUser)) {
+		if(!board.isSameWriter(loginUser)) {
 			throw new IllegalStateException("자신의 글만 수정, 삭제가 가능합니다.");
 		}
 		
@@ -83,10 +83,10 @@ public class QuestionController {
 	@PutMapping("/{id}")
 	public String udpate(@PathVariable Long id, String title, String contents, Model model, HttpSession session) {
 		try {
-			Question question = questionRepository.findOne(id);
-			hasPermission(session, question);
-			question.update(title, contents);
-			questionRepository.save(question);
+			Board board = boardRepository.findOne(id);
+			hasPermission(session, board);
+			board.update(title, contents);
+			boardRepository.save(board);
 			return "redirect:/questions/" + id.toString();
 			
 		} catch (IllegalStateException e){
@@ -101,9 +101,9 @@ public class QuestionController {
 	@DeleteMapping("/{id}")
 	public String delete(@PathVariable Long id, Model model, HttpSession session) {
 		try {
-			Question question = questionRepository.findOne(id);
+			Board question = boardRepository.findOne(id);
 			hasPermission(session, question);
-			questionRepository.delete(id);
+			boardRepository.delete(id);
 			return "redirect:/";
 			
 		} catch (IllegalStateException e){

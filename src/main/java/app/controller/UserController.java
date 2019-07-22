@@ -1,11 +1,7 @@
 package app.controller;
 
-import java.io.IOException;
-
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.websocket.SessionException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -48,23 +44,25 @@ public class UserController {
 		return "user/login";
 	}
 	
+	
 	@PostMapping("login")
 //	public String login(String userId, String password, HttpSession session) {
-	public String login(String userId, String password, HttpServletRequest req) throws org.hibernate.SessionException {
+	public String login(String userId, String password, Model model, HttpSession session) {
 		
 		System.out.println("login start");
 		User user = userRepository.findByUserId(userId);
 		System.out.println("found user id");
 		if (user == null) {
 			System.out.println("not matched userId");
-			return "redirect:/users/login";
+			model.addAttribute("errorMessage", "not matched userId");
+			return "user/login";
 		}
 		if (!user.matchPassword(password)) {
 			System.out.println("wrong password");
-			return "redirect:/users/login";
+			model.addAttribute("errorMessage", "wrong password");
+			return "user/login";
 		}
-		System.out.println("found user data");
-		HttpSession session = req.getSession(true);					
+		System.out.println("found user data");				
 		session.setAttribute(HttpSessionUtils.USER_SESSION_KEY, user);
 		System.out.println("Login success");
 		
@@ -117,5 +115,12 @@ public class UserController {
 		user.update(updateUser);
 		userRepository.save(user);
 		return "redirect:/";
+	}
+	
+	@GetMapping("/profile/{id}")
+	public String showProfile(@PathVariable Long id, Model model) {
+		User user = userRepository.findOne(id);
+		model.addAttribute("user", user);
+		return "user/profile";
 	}
 }

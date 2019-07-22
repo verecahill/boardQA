@@ -2,8 +2,8 @@ package app.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import app.dto.Question;
+import app.dto.Board;
 
-public interface QuestionRepository extends JpaRepository<Question, Long>{
+public interface BoardRepository extends JpaRepository<Board, Long>{
 
 }

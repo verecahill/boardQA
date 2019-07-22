@@ -17,6 +17,8 @@ function addAnswer(e) {
 		error : onError,
 		success : onSuccess
 	});
+	
+	
 }
 
 function onError() {
@@ -24,7 +26,12 @@ function onError() {
 }
 
 function onSuccess(data, status) {
-	console.log(data);
+	if(data.userId == null){
+		alert("로그인 해야 합니다.");
+		$(".answer-write textarea").val("");
+		return;
+	}
+	console.log("data : " + data);
 	var answerTemplate = $("#answerTemplate").html();
 	var template = answerTemplate.format(data.writer.userId,
 			data.formattedCreateDate, data.contents, data.question.id, data.id);

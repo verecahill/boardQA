@@ -5,17 +5,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import app.repository.QuestionRepository;
+import app.repository.BoardRepository;
 
 @Controller
 public class HomeController {
 
 	@Autowired
-	private QuestionRepository questionRepository;
+	private BoardRepository boardRepository;
 	
 	@GetMapping("")
 	public String home(Model model) {
-		model.addAttribute("questions", questionRepository.findAll());
+		model.addAttribute("boards", boardRepository.findAll());
 		return "index";
 	}
 }

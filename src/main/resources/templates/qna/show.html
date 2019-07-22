@@ -8,7 +8,7 @@
 
 	<div class="container" id="main">
 		<div class="col-md-12 col-sm-12 col-lg-12">
-			{{#question}}
+			{{#board}}
 			<div class="panel panel-default">
 				<header class="qna-header">
 					<h2 class="qna-title">{{title}}</h2>
@@ -18,7 +18,7 @@
 						<div class="article-header">
 							<div class="article-header-thumb">
 								<img
-									src="https://graph.facebook.com/v2.3/100000059371774/picture"
+									src="https://img.icons8.com/dusk/64/000000/cat-profile.png"
 									class="article-author-thumb" alt="">
 							</div>
 							<div class="article-header-text">
@@ -48,14 +48,14 @@
 					<div class="qna-comment">
 						<div class="qna-comment-slipp">
 							<p class="qna-comment-count">
-								<strong>2</strong>개의 의견
+								<strong>{{countOfAnswer}}</strong>개의 의견
 							</p>
 							<div class="qna-comment-slipp-articles">
-								{{#answers}}
+								{{#tasks}}
 								<article class="article" id="answer-1405">
 									<div class="article-header">
 										<div class="article-header-thumb">
-											<img src="https://graph.facebook.com/v2.3/1324855987/picture"
+											<img src="https://img.icons8.com/dusk/64/000000/cat-profile.png"
 												class="article-author-thumb" alt="">
 										</div>
 										<div class="article-header-text">
@@ -77,9 +77,9 @@
 										</ul>
 									</div>
 								</article>
-								{{/answers}}
+								{{/tasks}}
 								<form class="answer-write" method="post"
-									action="/api/questions/{{id}}/answers">
+									action="/api/boards/{{id}}/tasks">
 									<div class="form-group" style="padding: 14px;">
 										<textarea class="form-control"
 											placeholder="Update your status" name="contents"></textarea>
@@ -93,7 +93,7 @@
 					</div>
 				</div>
 			</div>
-			{{/question}}
+			{{/board}}
 		</div>
 	</div>
 
@@ -117,7 +117,7 @@
 				<a class="link-modify-article" href="/api/qna/updateAnswer/{3}">수정</a>
 			</li>
 			<li>
-				<a class="link-delete-article" href="/api/questions/{3}/answers/{4}">삭제</a>
+				<a class="link-delete-article" href="/api/boards/{3}/tasks/{4}">삭제</a>
 			</li>
 		</ul>
 		</div>

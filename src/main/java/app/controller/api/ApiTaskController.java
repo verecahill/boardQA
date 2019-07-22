@@ -9,54 +9,54 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import app.dto.Answer;
-import app.dto.Question;
+import app.dto.Task;
+import app.dto.Board;
 import app.dto.User;
-import app.repository.AnswerRepository;
-import app.repository.QuestionRepository;
+import app.repository.TaskRepository;
+import app.repository.BoardRepository;
 import app.util.HttpSessionUtils;
 import app.util.Result;
 
 @RestController
-@RequestMapping("/api/questions/{questionId}/answers")
-public class ApiAnswerController {
+@RequestMapping("/api/boards/{boardId}/tasks")
+public class ApiTaskController {
 	
 	@Autowired
-	private QuestionRepository questionRepository;
+	private BoardRepository boardRepository;
 	
 	@Autowired
-	private AnswerRepository answerRepository;
+	private TaskRepository taskRepository;
 	
 	@PostMapping("")
-	public Answer create(@PathVariable Long questionId, String contents, HttpSession session) {
+	public Task create(@PathVariable Long boardId, String contents, HttpSession session) {
 		if (!HttpSessionUtils.isLoginUser(session)) {
 			return null;
 		}
 		
 		User loginUser = HttpSessionUtils.getUserFromSession(session);
-		Question question = questionRepository.findOne(questionId);
-		Answer answer = new Answer(loginUser, question, contents);
-		question.addAnswer();
-		return answerRepository.save(answer);
+		Board board = boardRepository.findOne(boardId);
+		Task task = new Task(loginUser, board, contents);
+		board.addAnswer();
+		return taskRepository.save(task);
 		
 	}
 	
 	@DeleteMapping("/{id}")
-	public Result delete(@PathVariable Long questionId, @PathVariable Long id, HttpSession session) {
+	public Result delete(@PathVariable Long boardId, @PathVariable Long id, HttpSession session) {
 		if (!HttpSessionUtils.isLoginUser(session)) {
 			return Result.fail("로그인해야 합니다.");
 		}
 		
-		Answer answer = answerRepository.findOne(id);
+		Task task = taskRepository.findOne(id);
 		User loginUser = HttpSessionUtils.getUserFromSession(session);
-		if (!answer.isSameWriter(loginUser)) {
+		if (!task.isSameWriter(loginUser)) {
 			return Result.fail("자신의 글만 삭제 할 수 있습니다.");
 		}
 		
-		answerRepository.delete(id);
-		Question question = questionRepository.findOne(questionId);
-		question.deleteAnswer();
-		questionRepository.save(question);
+		taskRepository.delete(id);
+		Board board = boardRepository.findOne(boardId);
+		board.deleteAnswer();
+		boardRepository.save(board);
 		return Result.ok();
 	}
 }

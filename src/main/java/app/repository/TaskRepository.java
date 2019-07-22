@@ -2,8 +2,8 @@ package app.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import app.dto.Answer;
+import app.dto.Task;
 
-public interface AnswerRepository extends JpaRepository<Answer, Long>{
+public interface TaskRepository extends JpaRepository<Task, Long>{
 	
 }
