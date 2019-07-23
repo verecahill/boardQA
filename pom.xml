@@ -13,6 +13,7 @@
 	<artifactId>boardqa</artifactId>
 	<version>1.0</version>
 	<name>boardQA</name>
+	<packaging>war</packaging>
 	<description>spring board web application</description>
 
 	<properties>
@@ -28,6 +29,8 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+		
+		
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
