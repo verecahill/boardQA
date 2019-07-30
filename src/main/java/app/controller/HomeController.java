@@ -35,4 +35,13 @@ public class HomeController {
 		model.addAttribute("page", page+1);
 		return "index";
 	}
+	
+	@GetMapping("/hello")
+	public String helloPage(@RequestParam(value = "page", required = false, defaultValue = "0") int page,
+			@RequestParam(value = "size", required = false, defaultValue = "4") int size, Model model){
+		Page<Board> boards = boardService.getBoardWithPaginated(page, size);
+		model.addAttribute("boards", boards.getContent());
+		model.addAttribute("page", page+1);
+		return "hello";
+	}
 }
