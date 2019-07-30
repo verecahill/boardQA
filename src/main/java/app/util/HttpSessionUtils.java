@@ -2,7 +2,7 @@ package app.util;
 
 import javax.servlet.http.HttpSession;
 
-import app.dto.User;
+import app.dto.Account;
 
 public class HttpSessionUtils {
 	public static final String USER_SESSION_KEY = "sessionedUser";
@@ -15,12 +15,12 @@ public class HttpSessionUtils {
 		return true;
 	}
 	
-	public static User getUserFromSession(HttpSession session) {
+	public static Account getUserFromSession(HttpSession session) {
 		if (!isLoginUser(session)) {
 			return null;			
 		}
 		
-		return (User)session.getAttribute(USER_SESSION_KEY);
+		return (Account)session.getAttribute(USER_SESSION_KEY);
 	
 	}
 }

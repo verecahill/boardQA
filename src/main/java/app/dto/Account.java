@@ -1,16 +1,25 @@
 package app.dto;
 
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
-public class User {
+@Table(name = "user")
+public class Account {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -28,8 +37,22 @@ public class User {
 	
 	@JsonProperty
 	private String name;
-
 	
+	@ManyToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+	@JoinTable(name="user_role", 
+				joinColumns=@JoinColumn(name="user_id"),
+				inverseJoinColumns = @JoinColumn(name="role_id"))
+	private Set<Role> roles;
+	
+
+	public Set<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Set<Role> roles) {
+		this.roles = roles;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -88,7 +111,7 @@ public class User {
 	public String toString() {
 		return "User [userId=" + userId + ", password=" + password + ", email=" + email + ", name=" + name + "]";
 	}
-	public void update(User newUser) {
+	public void update(Account newUser) {
 		this.password = newUser.password;
 		this.name = newUser.name;
 		this.email = newUser.email;
@@ -110,7 +133,7 @@ public class User {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		User other = (User) obj;
+		Account other = (Account) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

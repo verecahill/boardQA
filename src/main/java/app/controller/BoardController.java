@@ -3,6 +3,8 @@ package app.controller;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import app.dto.Board;
-import app.dto.User;
+import app.dto.Account;
 import app.repository.BoardRepository;
 import app.util.HttpSessionUtils;
 
@@ -40,7 +42,7 @@ public class BoardController {
 			return "user/login";
 		}
 		
-		User sessionUser = HttpSessionUtils.getUserFromSession(session);
+		Account sessionUser = HttpSessionUtils.getUserFromSession(session);
 		Board newBoard = new Board(sessionUser, title, contents);
 		boardRepository.save(newBoard);
 		
@@ -48,8 +50,14 @@ public class BoardController {
 	}
 	
 	@GetMapping("/{id}")
-	public String show(@PathVariable Long id, Model model) {
+	public String show(Authentication authentication ,@PathVariable Long id, Model model) {
 		model.addAttribute("board", boardRepository.findOne(id));
+		
+		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+		if(userDetails != null) {
+			model.addAttribute("sessionedUser", userDetails);
+		}
+		
 		return "/qna/show";
 				
 	}
@@ -73,7 +81,7 @@ public class BoardController {
 			throw new IllegalStateException("로그인이 필요합니다.");
 		}
 		
-		User loginUser = HttpSessionUtils.getUserFromSession(session);
+		Account loginUser = HttpSessionUtils.getUserFromSession(session);
 		if(!board.isSameWriter(loginUser)) {
 			throw new IllegalStateException("자신의 글만 수정, 삭제가 가능합니다.");
 		}

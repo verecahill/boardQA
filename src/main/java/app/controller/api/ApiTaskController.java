@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import app.dto.Task;
 import app.dto.Board;
-import app.dto.User;
+import app.dto.Account;
 import app.repository.TaskRepository;
 import app.repository.BoardRepository;
 import app.util.HttpSessionUtils;
@@ -33,7 +33,7 @@ public class ApiTaskController {
 			return null;
 		}
 		
-		User loginUser = HttpSessionUtils.getUserFromSession(session);
+		Account loginUser = HttpSessionUtils.getUserFromSession(session);
 		Board board = boardRepository.findOne(boardId);
 		Task task = new Task(loginUser, board, contents, title);
 		board.addAnswer();
@@ -48,7 +48,7 @@ public class ApiTaskController {
 		}
 		
 		Task task = taskRepository.findOne(id);
-		User loginUser = HttpSessionUtils.getUserFromSession(session);
+		Account loginUser = HttpSessionUtils.getUserFromSession(session);
 		if (!task.isSameWriter(loginUser)) {
 			return Result.fail("자신의 글만 삭제 할 수 있습니다.");
 		}

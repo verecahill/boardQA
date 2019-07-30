@@ -33,7 +33,7 @@ public class Board {
 	@ManyToOne
 	@JoinColumn(foreignKey = @ForeignKey(name="fk_question_writer"))
 	@JsonProperty
-	private User writer;
+	private Account writer;
 	
 	@JsonProperty
 	private String title;
@@ -54,7 +54,7 @@ public class Board {
 	
 	public Board() {}
 
-	public Board(User writer, String title, String contents) {
+	public Board(Account writer, String title, String contents) {
 		super();
 		this.writer = writer;
 		this.title = title;
@@ -80,7 +80,7 @@ public class Board {
 		
 	}
 
-	public boolean isSameWriter(User loginUser) {
+	public boolean isSameWriter(Account loginUser) {
 		
 		return this.writer.equals(loginUser);
 	}
@@ -101,11 +101,11 @@ public class Board {
 		this.id = id;
 	}
 
-	public User getWriter() {
+	public Account getWriter() {
 		return writer;
 	}
 
-	public void setWriter(User writer) {
+	public void setWriter(Account writer) {
 		this.writer = writer;
 	}
 

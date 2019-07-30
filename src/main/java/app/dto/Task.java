@@ -27,7 +27,7 @@ public class Task {
 	@ManyToOne
 	@JoinColumn(foreignKey=@ForeignKey(name="fk_question_writer"))
 	@JsonProperty
-	private User writer;
+	private Account writer;
 	
 	@ManyToOne
 	@JoinColumn(foreignKey=@ForeignKey(name="fk_answer_to_question"))
@@ -46,7 +46,7 @@ public class Task {
 	
 	public Task() {}
 	
-	public Task(User writer, Board board, String contents, String title) {
+	public Task(Account writer, Board board, String contents, String title) {
 		this.writer = writer;
 		this.board = board;
 		this.title = title;
@@ -97,7 +97,7 @@ public class Task {
 		return "Answer [id=" + id + ", writer=" + writer + ", content=" + contents + ", createDate=" + createDate + "]";
 	}
 
-	public boolean isSameWriter(User loginUser) {
+	public boolean isSameWriter(Account loginUser) {
 		
 		return loginUser.equals(this.writer);
 	}

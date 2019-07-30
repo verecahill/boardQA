@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import app.dto.User;
+import app.dto.Account;
 import app.repository.UserRepository;
 
 @RestController
@@ -17,7 +17,7 @@ public class ApiUserController {
 	private UserRepository userRepository;
 	
 	@GetMapping("/{id}")
-	public User show(@PathVariable Long id) {
+	public Account show(@PathVariable Long id) {
 		return userRepository.findOne(id);
 	}
 	

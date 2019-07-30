@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import app.dto.Task;
 import app.dto.Board;
-import app.dto.User;
+import app.dto.Account;
 import app.repository.TaskRepository;
 import app.repository.BoardRepository;
 import app.util.HttpSessionUtils;
@@ -31,7 +31,7 @@ public class TaskController {
 			return "user/login";
 		}
 		
-		User loginUser = HttpSessionUtils.getUserFromSession(session);
+		Account loginUser = HttpSessionUtils.getUserFromSession(session);
 		Board question = boardRepository.findOne(boardId);
 		Task answer = new Task(loginUser, question, contents, title);
 		taskRepository.save(answer);
